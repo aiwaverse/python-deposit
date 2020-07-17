@@ -1,4 +1,4 @@
-from random import shuffle
+import random as rnd
 from itertools import product
 import functools
 import copy
@@ -35,8 +35,7 @@ class Card:
 
     def __repr__(self):
         return str(self.value) + " of " + str(self.suit)
-
-    #        return f"{self.value} of {self.suit}"
+        #   return f"{self.value} of {self.suit}"
 
     # Implementing == and < for usage of @functools.total_ordering
     def __eq__(self, other):
@@ -53,22 +52,20 @@ class Card:
 class Deck:
     """codes a pack of 52 card combinations"""
 
-    _full_deck = product(Card.valid_suits, Card.valid_values)
-
     @classmethod
     def make_deck(cls, source):
         return (Card(s, v) for s, v in source)
 
     def __init__(self):
-        deck = copy.copy(Deck._full_deck)
-        self.cards = list(Deck.make_deck(deck))
+        full_deck = product(Card.valid_suits, Card.valid_values)
+        self.cards = list(Deck.make_deck(full_deck))
 
     def count(self):
         return len(self.cards)
 
     def __repr__(self):
-        return "Deck of " + str(self.count()) + " cards"
-        # return f"Deck of {self.count()} cards"
+        # return "Deck of " + str(self.count()) + " cards"
+        return f"Deck of {self.count()} cards"
 
     def _deal(self, number):
         cards_to_deal = []
@@ -82,12 +79,13 @@ class Deck:
         return cards_to_deal
 
     def __eq__(self, other):
-        return all(s == o for s in self.cards for o in other.cards)
+        return self.cards == other.cards
 
     def shuffle(self):
-        if sorted(self.cards) != sorted(Deck.make_deck(Deck._full_deck)):
+        full_deck = product(Card.valid_suits, Card.valid_values)
+        if sorted(self.cards) != sorted(Deck.make_deck(full_deck)):
             raise ValueError("Only full decks can be shuffled")
-        shuffle(self.cards)
+        rnd.shuffle(self.cards)
         return self.cards
 
     def deal_card(self):
@@ -99,6 +97,10 @@ class Deck:
 
 if __name__ == "__main__":
     d = Deck()
-    d.shuffle()
-    cards = d._deal(20)
-    print(cards, len(cards))
+    print(d.cards)
+    print(d.shuffle())
+    d2 = Deck()
+    d3 = Deck()
+    d4 = Deck()
+    print(d2, d3, d4)
+    print(d != d2)
