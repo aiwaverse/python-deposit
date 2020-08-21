@@ -122,3 +122,5 @@ dmypy.json
 udemy/
 qwiklabs/
 fic_edit.py
+*.txt
+*.bin
