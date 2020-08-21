@@ -1,7 +1,8 @@
 from pyfiglet import Figlet
 from termcolor import cprint
 
-def print_ascii_art(text,color_pick="magenta"):
+
+def print_ascii_art(text, color_pick="magenta"):
     available_colors = (
         "red",
         "green",
