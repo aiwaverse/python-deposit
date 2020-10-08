@@ -2,7 +2,19 @@
 import shutil
 import subprocess
 import os
+import re
+import fnmatch
 from glob import glob
+
+
+def findfiles(which, where="."):
+    """Returns list of filenames from `where` path matched by 'which'
+       shell pattern. Matching is case-insensitive."""
+
+    # TODO: recursive param with walk() filtering
+    rule = re.compile(fnmatch.translate(which), re.IGNORECASE)
+    return [name for name in os.listdir(where) if rule.match(name)]
+
 
 #%%
 racket_folder = "/home/maya/Documents/aiwita/codes/racket/correcao/LISTA6/"
@@ -31,10 +43,11 @@ for student_folder in students_folders:
     os.chdir(os.path.join(os.getcwd(), student_folder, ""))
     for file_to_copy in files_to_copy:
         shutil.copy(os.path.join(script_folder, file_to_copy), os.getcwd())
-    possible_files = glob("listaCap10*")
+    possible_files = findfiles("listaCap10*")
     if not possible_files:
         with open("message.txt", "w") as err_file:
             err_file.write("O aluno é burro pra caralho e não nomeou o arquivo certo.")
+        os.chdir("..")
         continue
     student_file = possible_files[0]
     if " " in student_file:
