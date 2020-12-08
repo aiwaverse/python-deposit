@@ -126,3 +126,4 @@ fic_edit.py
 *.bin
 dealwithdupes/
 dealwithdupes
+website_image_downloader.py
