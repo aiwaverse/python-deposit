@@ -124,6 +124,4 @@ qwiklabs/
 fic_edit.py
 *.txt
 *.bin
-dealwithdupes/
-dealwithdupes
-website_image_downloader.py
+non-git/
