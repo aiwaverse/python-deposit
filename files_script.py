@@ -1,5 +1,10 @@
-import os
 import subprocess
+import os
+
+
+class SomeClass:
+    def __init__(self) -> None:
+        pass
 
 
 folders = subprocess.check_output(["fdfind -t d"], shell=True).decode("utf-8").strip().split()
