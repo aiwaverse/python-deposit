@@ -26,6 +26,8 @@ if(CONSUMER_KEY and CONSUMER_SECRET):
     answer = "y"
     while answer == "y":
         master_block = input("Type in the @ of the account you want to block!\n")
+        if not master_block:
+            raise IOError("No valid input!")
         #%%
         try:
             followers = set(api.followers_ids(master_block))
