@@ -60,6 +60,7 @@ def get_blocking_information(
         followers = []
         for follower in tweepy.Cursor(api.followers_ids, id=user_masterblock).pages():
             followers += follower
+        followers.append(api.get_user(user_masterblock).id)
     except tweepy.TweepError:
         print("User unreachable!")
         return None
@@ -107,7 +108,7 @@ def do_again() -> bool:
     else:
         return False
 
-
+#%%
 def save_user_blocks(user_blocks: Set[str], blocklist: Set[str]) -> None:
     if not os.path.exists("user_blocks.txt"):
         with open("user_blocks.txt", "w") as f:
