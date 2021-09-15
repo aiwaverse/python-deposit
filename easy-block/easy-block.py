@@ -1,4 +1,4 @@
-#%%
+# %%
 from typing import Set, Tuple, Union, List
 import tweepy
 import os
@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 from tqdm import tqdm
 import time
 
-#%%
+
+# %%
 def get_keys() -> Tuple[Union[str, None], Union[str, None]]:
     load_dotenv()
     key = os.getenv("TWITTER_API_KEY")
@@ -14,7 +15,7 @@ def get_keys() -> Tuple[Union[str, None], Union[str, None]]:
     return (key, secret)
 
 
-#%%
+# %%
 def authenticate_user(key: str, secret: str) -> tweepy.API:
     auth = tweepy.OAuthHandler(key, secret, callback="oob")
     auth_url = auth.get_authorization_url()
@@ -27,7 +28,7 @@ def authenticate_user(key: str, secret: str) -> tweepy.API:
     return tweepy.API(auth)
 
 
-#%%
+# %%
 def read_blocks_file() -> List[str]:
     blocks: List[str] = []
     if os.path.exists("user_blocks.txt"):
@@ -36,7 +37,7 @@ def read_blocks_file() -> List[str]:
     return blocks
 
 
-#%%
+# %%
 def get_user_info(user: tweepy.API) -> Tuple[Set[str], Set[str], Set[str]]:
     user_friends = []
     for friend in tweepy.Cursor(user.friends_ids).pages():
@@ -51,7 +52,7 @@ def get_user_info(user: tweepy.API) -> Tuple[Set[str], Set[str], Set[str]]:
     return (set(user_friends), set(user_followers), set(user_blocks))
 
 
-#%%
+# %%
 def get_blocking_information(
     api: tweepy.API, user_masterblock: str
 ) -> Union[None, Set[str]]:
@@ -67,7 +68,7 @@ def get_blocking_information(
     return set(followers)
 
 
-#%%
+# %%
 def generate_blocking_list(
     api: tweepy.API, user_masterblock: str
 ) -> Union[None, Set[str]]:
@@ -81,7 +82,7 @@ def generate_blocking_list(
         return None
 
 
-#%%
+# %%
 def block_users(api: tweepy.API, blocklist: Set[str]) -> None:
     for user in tqdm(blocklist):
         try:
@@ -90,7 +91,7 @@ def block_users(api: tweepy.API, blocklist: Set[str]) -> None:
             continue
 
 
-#%%
+# %%
 def do_again() -> bool:
     answer_ok = False
     answer = ""
@@ -108,7 +109,8 @@ def do_again() -> bool:
     else:
         return False
 
-#%%
+
+# %%
 def save_user_blocks(user_blocks: Set[str], blocklist: Set[str]) -> None:
     if not os.path.exists("user_blocks.txt"):
         with open("user_blocks.txt", "w") as f:
@@ -119,7 +121,7 @@ def save_user_blocks(user_blocks: Set[str], blocklist: Set[str]) -> None:
             f.write(f"{block}\n")
 
 
-#%%
+# %%
 
 if __name__ == "__main__":
     CONSUMER_KEY, CONSUMER_SECRET = get_keys()
@@ -148,4 +150,3 @@ if __name__ == "__main__":
         print("Blocking users...")
         block_users(api, blocklist)
         keep_going = do_again()
-
